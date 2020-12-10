@@ -1,14 +1,38 @@
 pipeline {
-  agent any
-  stages {
-    stage('Stage1') {
-      steps {
-        echo "This is build number $BUILD_NUMBER of demo $DEMO"
-      }
+    agent any
+    environment {
+        RELEASE = '20.04'
     }
-
-  }
-  environment {
-    DEMO = '1'
-  }
+    stages {
+        stage('Git checkout') {
+            agent any
+            checkout([
+            $class: 'GitSCM',
+            branches: [[name: '*/main']],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [],
+            submoduleCfg: [],
+            userRemoteConfigs:
+             [[credentialsId: '', url: 'https://github.com/bogdanagache/jgsu-spring-petclinic']]])
+        }
+        stage ('Building jgsu-spring-petclinic') {
+            // Shell build step
+            sh '''
+            ./mvnw package
+            '''
+            archiveArtifacts allowEmptyArchive: false,
+            artifacts: 'target/*.jar',
+            caseSensitive: true,
+            defaultExcludes: true,
+            fingerprint: false,
+            onlyIfSuccessful: false
+            // JUnit Results
+            junit 'target/surefire-reports/*.xml'
+        }
+        stage('Testing') {
+            steps {
+                echo "Testing. I can see release ${RELEASE}, but not log level ${LOG_LEVEL}"
+            }
+        }
+    }
 }
