@@ -32,6 +32,18 @@ pipeline {
         junit 'target/surefire-reports/*.xml'
       }
     }
-
+  }
+  post {
+    success {
+      archiveArtifacts 'test-results.txt'
+      slackSend channel: '#builds',
+      color: 'good',
+      message: "Release ${env.RELEASE}, success: ${currentBuild.fullDisplayName}."
+    }
+    failure {
+      slackSend channel: '#builds',
+      color: 'danger',
+      message: "Release ${env.RELEASE}, FAILED: ${currentBuild.fullDisplayName}."
+    }
   }
 }
