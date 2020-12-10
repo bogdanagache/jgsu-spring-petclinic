@@ -16,18 +16,20 @@ pipeline {
              [[credentialsId: '', url: 'https://github.com/bogdanagache/jgsu-spring-petclinic']]])
         }
         stage ('Building jgsu-spring-petclinic') {
+          steps {
             // Shell build step
             sh '''
-            ./mvnw package
-            '''
-            archiveArtifacts allowEmptyArchive: false,
-            artifacts: 'target/*.jar',
-            caseSensitive: true,
-            defaultExcludes: true,
-            fingerprint: false,
-            onlyIfSuccessful: false
-            // JUnit Results
-            junit 'target/surefire-reports/*.xml'
+              ./mvnw package
+              '''
+              archiveArtifacts allowEmptyArchive: false,
+              artifacts: 'target/*.jar',
+              caseSensitive: true,
+              defaultExcludes: true,
+              fingerprint: false,
+              onlyIfSuccessful: false
+              // JUnit Results
+              junit 'target/surefire-reports/*.xml'
+          }
         }
         stage('Testing') {
             steps {
