@@ -27,7 +27,11 @@ pipeline {
       }
     }
     stage('Build') {
+      environment {
+        VERSION_SUFFIX = getVersionSuffix()
+      }
       steps {
+        echo "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX}"
         // Shell build step
         sh '''
         ./mvnw package
