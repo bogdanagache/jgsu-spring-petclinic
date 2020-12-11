@@ -4,6 +4,16 @@ pipeline {
     RELEASE = 'v1'
   }
   stages {
+    stage('Audit  Tools') {
+      steps {
+        sh '''
+        git version
+        docker version
+        node --version
+        dotnet --list-runtimes
+        '''
+      }
+    }
     stage('Checkout') {
       steps {
         checkout([
