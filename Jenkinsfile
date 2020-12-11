@@ -1,7 +1,11 @@
 pipeline {
   agent any
+  parameters {
+    booleanParam(name: 'RC', defaultValue: false, description: 'Is this a Release Candidate?')
+  }
   environment {
-    RELEASE = 'v1'
+    VERSION = '0.1.0'
+    VERSION_RC = 'rc.2'
   }
   stages {
     stage('Audit  Tools') {
@@ -39,16 +43,30 @@ pipeline {
     }
   }
   post {
+    environment {
+      /* groovylint-disable-next-line UnnecessaryGetter */
+      VERSION_SUFFIX = getVersionSuffix()
+    }
     success {
       slackSend channel: '#builds',
       color: 'good',
-      message: "Release ${env.RELEASE}, success: ${currentBuild.fullDisplayName}."
+      message: "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX} was SUCCESSFUL: ${currentBuild.fullDisplayName}."
     }
     failure {
+      /* groovylint-disable-next-line DuplicateStringLiteral */
       slackSend channel: '#builds',
       color: 'danger',
-      message: "Release ${env.RELEASE}, FAILED: ${currentBuild.fullDisplayName}."
+      message: "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX} FAILED: ${currentBuild.fullDisplayName}."
     }
+  }
+}
+
+String getVersionSuffix() {
+  if (params.RC) {
+    return env.VERSION_RC
+  }
+  else {
+    return env.VERSION_RC + '+ci.' + env.BUILD_NUMBER
   }
 }
 
