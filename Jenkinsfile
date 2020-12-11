@@ -1,3 +1,7 @@
+/* groovylint-disable-next-line CompileStatic */
+library identifier: 'jenkins-shared_library@main',
+        retriever: modernSCM([$class: 'GitSCMSource', remote: 'https://github.com/bogdanagache/jenkins-shared_library'])
+
 pipeline {
   agent any
   parameters {
@@ -69,13 +73,4 @@ String getVersionSuffix() {
   else {
     return env.VERSION_RC + '+ci.' + env.BUILD_NUMBER
   }
-}
-
-void auditTools() {
-  sh '''
-    git version
-    docker version
-    dotnet --list-sdks
-    dotnet --list-runtimes
-  '''
 }
