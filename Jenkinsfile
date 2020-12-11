@@ -6,12 +6,7 @@ pipeline {
   stages {
     stage('Audit  Tools') {
       steps {
-        sh '''
-        git version
-        docker --version
-        node --version
-        dotnet --list-runtimes
-        '''
+        auditTools()
       }
     }
     stage('Checkout') {
@@ -55,4 +50,13 @@ pipeline {
       message: "Release ${env.RELEASE}, FAILED: ${currentBuild.fullDisplayName}."
     }
   }
+}
+
+void auditTools() {
+  sh '''
+    git version
+    docker version
+    dotnet --list-sdks
+    dotnet --list-runtimes
+  '''
 }
