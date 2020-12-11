@@ -6,6 +6,7 @@ pipeline {
   environment {
     VERSION = '0.1.0'
     VERSION_RC = 'rc.2'
+    VERSION_SUFFIX = getVersionSuffix()
   }
   stages {
     stage('Audit  Tools') {
@@ -43,14 +44,10 @@ pipeline {
     }
   }
   post {
-    environment {
-      /* groovylint-disable-next-line UnnecessaryGetter */
-      VERSION_SUFFIX = getVersionSuffix()
-    }
     success {
       slackSend channel: '#builds',
       color: 'good',
-      message: "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX} was SUCCESSFUL: ${currentBuild.fullDisplayName}."
+      message: "Build version: ${VERSION} with suffix: ${VERSION_SUFFIX} SUCCESSFUL: ${currentBuild.fullDisplayName}."
     }
     failure {
       /* groovylint-disable-next-line DuplicateStringLiteral */
