@@ -8,7 +8,7 @@ pipeline {
       steps {
         sh '''
         git version
-        docker version
+        docker --version
         node --version
         dotnet --list-runtimes
         '''
