@@ -30,11 +30,8 @@ pipeline {
       }
     }
     stage('Build') {
-            environment {
-                VERSION_SUFFIX = getVersionSuffix rcNumber: "${VERSION_RC}", isReleaseCandidate: "${RC}"
-            }
       steps {
-        echo "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX}"
+        echo "Building version: ${VERSION}"
         // Shell build step
         sh '''
         ./mvnw package
