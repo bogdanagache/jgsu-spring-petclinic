@@ -51,13 +51,13 @@ pipeline {
     success {
       slackSend channel: '#builds',
       color: 'good',
-      message: "Build version: ${VERSION} with suffix: ${VERSION_SUFFIX} SUCCESSFUL: ${currentBuild.fullDisplayName}."
+      message: "Build version: ${VERSION} was SUCCESSFUL: ${currentBuild.fullDisplayName}."
     }
     failure {
       /* groovylint-disable-next-line DuplicateStringLiteral */
       slackSend channel: '#builds',
       color: 'danger',
-      message: "Building version: ${VERSION} with suffix: ${VERSION_SUFFIX} FAILED: ${currentBuild.fullDisplayName}."
+      message: "Building version: ${VERSION} has FAILED: ${currentBuild.fullDisplayName}."
     }
   }
 }
