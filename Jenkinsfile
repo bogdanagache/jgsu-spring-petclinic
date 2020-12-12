@@ -10,7 +10,6 @@ pipeline {
   environment {
     VERSION = '0.1.0'
     VERSION_RC = 'rc.2'
-    VERSION_SUFFIX = getVersionSuffix()
   }
   stages {
     stage('Audit  Tools') {
