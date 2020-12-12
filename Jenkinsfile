@@ -1,6 +1,5 @@
-/* groovylint-disable-next-line CompileStatic */
 library identifier: 'jenkins-shared_library@main',
-        retriever: modernSCM([$class: 'GitSCMSource', 
+        retriever: modernSCM([$class: 'GitSCMSource',
         remote: 'https://github.com/bogdanagache/jenkins-shared_library.git'])
 
 pipeline {
